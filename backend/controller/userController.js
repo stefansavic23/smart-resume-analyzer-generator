@@ -1,23 +1,37 @@
+import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 
-const login = (req, res) => {
-    const { email } = req.body;
-    const { password } = req.body;
+const login = async (req, res) => {
+    try {
+        const { email, password } = reg.body;
+        // after find user in DB
+        let user;
+        if (!user) {
+            return res.status(401).json({ message: "Authentication failed" })
+        }
 
-    if (!email || !password) {
-        return res.status(500).json("Email and password are required")
+        const passwordMatch = await bcrypt.compare(password, user.password)
+        if (!passwordMatch) {
+            return res.status(401).json({ message: "Authentication failed" })
+        }
+
+        const token = jwt.sign({ "user_id": user.id }, 'your-secret-key', { expiresIn: "1h" })
+        res.status(200).json({ token })
+    } catch (error) {
+        res.status(500).json({ message: "Login failed" })
     }
-
-    const saltRounds = 10
-
-    bcrypt.genSalt(saltRounds, (err, salt) => {
-        bcrypt.hash(password, salt, (err, hash) => {
-           console.log(hash)
-        })
-    })
-
-    res.status(200).json("Successful")
-
 }
 
-export default login
+const register = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const hashedPassword = bcrypt.hash(password, 10)
+
+        // after save user to DB
+        res.status(201).json({ message: "User registered successfully" })
+    } catch (error) {
+        res.status(500).json({ mesage: "Registration failed" })
+    }
+}
+
+export { login, register }
