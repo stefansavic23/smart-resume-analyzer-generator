@@ -1,5 +1,5 @@
-import { Sequelize, DataTypes } from 'sequelize'
-const sequelize = new Sequelize('sqlite::memory:');
+import sequelize from "../util/database.js";
+import { DataTypes } from "sequelize";
 
 const User = sequelize.define(
     'User',
