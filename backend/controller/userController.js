@@ -1,11 +1,16 @@
+import 'dotenv/config'
+
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
+import User from '../model/user.js'
 
 const login = async (req, res) => {
     try {
-        const { email, password } = reg.body;
-        // after find user in DB
-        let user;
+        await sequelize.sync({ force: true });
+
+        const { email, password } = req.body;
+
+        const user = await User.findOne({ where: { email } });
         if (!user) {
             return res.status(401).json({ message: "Authentication failed" })
         }
@@ -15,7 +20,7 @@ const login = async (req, res) => {
             return res.status(401).json({ message: "Authentication failed" })
         }
 
-        const token = jwt.sign({ "user_id": user.id }, 'your-secret-key', { expiresIn: "1h" })
+        const token = jwt.sign({ "user_id": user.id }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" })
         res.status(200).json({ token })
     } catch (error) {
         res.status(500).json({ message: "Login failed" })
@@ -25,12 +30,12 @@ const login = async (req, res) => {
 const register = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const hashedPassword = bcrypt.hash(password, 10)
+        const hashedPassword = await bcrypt.hash(password, 10)
+        const user = await User.create({ email: email, password: hashedPassword })
 
-        // after save user to DB
         res.status(201).json({ message: "User registered successfully" })
     } catch (error) {
-        res.status(500).json({ mesage: "Registration failed" })
+        res.status(500).json({ message: "Registration failed", error })
     }
 }
 

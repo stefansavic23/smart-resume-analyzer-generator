@@ -1,11 +1,12 @@
-const { Sequelize, DataTypes } = require('sequelize');
+import { Sequelize, DataTypes } from 'sequelize'
 const sequelize = new Sequelize('sqlite::memory:');
 
 const User = sequelize.define(
     'User',
     {
         id: {
-            type: DataTypes.NUMBER,
+            primaryKey: true,
+            type: DataTypes.INTEGER,
             allowNull: false,
             autoIncrement: true,
             unique: true,
@@ -13,16 +14,16 @@ const User = sequelize.define(
         email: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true
         },
         password: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        }
+            type: DataTypes.TEXT
+        },
     },
     {
         timestamps: true
-    },
+    }
 );
 
 export default User
+
+

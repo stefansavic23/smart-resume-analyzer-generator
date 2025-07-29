@@ -1,15 +1,13 @@
 import "dotenv/config"
 import express from "express"
-import bodyParser from "body-parser"
 import userRoutes from "./routes/userRoutes.js"
 import resumeRoutes from './routes/resumeRoutes.js'
-import path from "path"
-import db from "./util/database.js"
+import User from "./model/user.js"
+import sequelize from "./util/database.js"
 
 const app = express()
 
-app.use(bodyParser.urlencoded())
-app.use(bodyParser.json())
+app.use(express.json())
 
 app.use("/", userRoutes)
 app.use("/resume", resumeRoutes)
@@ -18,15 +16,14 @@ app.get("/welcome", (req, res) => {
     res.json("Welcome")
 })
 
-db.authenticate()
-    .then(
-        () => {
-            console.log("Database connected")
-            app.listen(process.env.PORT, () => {
-                console.log(`Server running on port http://localhost:${process.env.PORT}`)
-            })
-        }
-    ).catch(err => {
-        console.log("Error connecting to the database: ", err)
-    })
+try{
+    await sequelize.sync({ force: false }); 
+    console.log("Database synced")
+} catch(error) {
+    console.error("Error with syncing: ", error)
+}
+
+app.listen(process.env.PORT, () => {
+    console.log(`Server running on port http://localhost:${process.env.PORT}`)
+})
 
