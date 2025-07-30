@@ -1,10 +1,10 @@
 import express from "express"
 import { login, register } from "../controller/userController.js"
-import verifyToken from '../controller/authMiddleware.js';
+import authenticateToken from '../controller/authMiddleware.js';
 
 const router = express.Router()
 
-router.post("/login", verifyToken, login)
+router.post("/login", authenticateToken, login)
 
 router.post("/register", register)
 
