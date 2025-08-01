@@ -4,7 +4,7 @@ import authenticateToken from '../controller/authMiddleware.js';
 
 const router = express.Router()
 
-router.post("/login", authenticateToken, login)
+router.post("/login", login)
 
 router.post("/register", register)
 

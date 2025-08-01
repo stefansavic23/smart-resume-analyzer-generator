@@ -26,6 +26,3 @@ try {
 } catch (err) {
     console.error('Error with connecting to DB: ', err);
 }
-
-
-
