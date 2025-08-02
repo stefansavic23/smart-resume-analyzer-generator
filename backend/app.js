@@ -7,8 +7,10 @@ import "./model/user.js"
 
 const app = express()
 
-app.use(express.json())
+app.set("view engine", "ejs")
+app.set("views", "./views")
 
+app.use(express.json())
 app.use("/", userRoutes)
 app.use("/resume", resumeRoutes)
 

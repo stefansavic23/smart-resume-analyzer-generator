@@ -11,8 +11,8 @@
     <div align="center">
         <h1>Upload your resume</h1>
         <hr>
-        <form action="/resume/upload" method="post">
-            <input type="file" name="resume" id="resume" placeholder="">
+        <form action="/resume/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="resume" id="resume">
             <br>
             <button>Analyze</button>
         </form>
