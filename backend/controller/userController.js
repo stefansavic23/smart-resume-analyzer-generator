@@ -2,7 +2,7 @@ import 'dotenv/config'
 
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
-import User from '../model/user.js'
+import User from "../model/User.js"
 
 const login = async (req, res) => {
     try {
@@ -36,7 +36,7 @@ const register = async (req, res) => {
 
         const accessToken = jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET)
 
-        const user = await User.create({ email, password: hashedPassword })
+        const user = await User.create({ email, password: (await hashedPassword).toString() })
 
         await user.save()
         res.status(201).json({ accessToken: accessToken })

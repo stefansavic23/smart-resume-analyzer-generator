@@ -3,8 +3,8 @@ import express from "express"
 import userRoutes from "./routes/userRoutes.js"
 import resumeRoutes from './routes/resumeRoutes.js'
 import sequelize from "./util/database.js"
-import "./model/resume.js"
-
+import "./model/Resume.js"
+import "./model/User.js"
 
 const app = express()
 
