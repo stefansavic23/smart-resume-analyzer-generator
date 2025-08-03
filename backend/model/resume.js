@@ -1,8 +1,8 @@
 import sequelize from "../util/database.js";
 import { DataTypes } from "sequelize";
 
-const User = sequelize.define(
-    'User',
+const Resume = sequelize.define(
+    'Resume',
     {
         id: {
             primaryKey: true,
@@ -11,17 +11,18 @@ const User = sequelize.define(
             autoIncrement: true,
             unique: true,
         },
-        email: {
+        filename: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        password: {
-            type: DataTypes.CHAR
-        },
+        data: {
+            type: DataTypes.BLOB('long'),
+            allowNull: false
+        }
     },
     {
         timestamps: true
     }
 );
 
-export default User
+export default Resume

@@ -1,5 +1,20 @@
+import 'dotenv/config'
+
+import { GoogleGenAI } from "@google/genai";
 import fs from "fs"
 import pdf from "pdf-parse"
+
+
+// The client gets the API key from the environment variable `GEMINI_API_KEY`.
+const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
+
+async function main() {
+    const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: "Explain how AI works in a few words",
+    });
+    console.log(response.text);
+}
 
 const analyzeResume = (req, res) => {
     let dataBuffer = fs.readFileSync(req.file.path)
@@ -23,6 +38,7 @@ const analyzeResume = (req, res) => {
     });
 
     res.json(req.file.path)
+    main();
 }
 
 export default analyzeResume
