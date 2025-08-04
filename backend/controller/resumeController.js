@@ -1,9 +1,9 @@
 import 'dotenv/config'
 
-import { GoogleGenAI } from "@google/genai";
 import fs from "fs"
 import pdf from "pdf-parse"
-
+import { GoogleGenAI } from "@google/genai";
+import Resume from "../model/Resume.js"
 
 // The client gets the API key from the environment variable `GEMINI_API_KEY`.
 const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
@@ -20,7 +20,6 @@ const analyzeResume = (req, res) => {
     let dataBuffer = fs.readFileSync(req.file.path)
 
     pdf(dataBuffer).then(function (data) {
-
         // number of pages
         console.log(data.numpages);
         // number of rendered pages
@@ -34,10 +33,8 @@ const analyzeResume = (req, res) => {
         console.log(data.version);
         // PDF text
         console.log(data.text);
-
+        res.json({ dataBuffer })
     });
-
-    res.json(req.file.path)
     main();
 }
 

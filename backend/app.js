@@ -5,6 +5,8 @@ import resumeRoutes from './routes/resumeRoutes.js'
 import sequelize from "./util/database.js"
 import "./model/Resume.js"
 import "./model/User.js"
+import User from "./model/User.js"
+import Resume from "./model/Resume.js"
 
 const app = express()
 
@@ -23,6 +25,8 @@ try {
     await sequelize.authenticate();
     console.log('DB connected');
     await sequelize.sync({ force: false });
+    User.hasOne(Resume)
+    Resume.belongsTo(User)
     app.listen(process.env.PORT, () => {
         console.log(`Server running on port http://localhost:${process.env.PORT}`)
     })
