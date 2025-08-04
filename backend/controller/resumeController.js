@@ -16,25 +16,17 @@ async function main() {
     console.log(response.text);
 }
 
-const analyzeResume = (req, res) => {
+const analyzeResume = async (req, res) => {
+    if (!req.file) return res.status(404).json({ message: "Please input your resume" })
+
     let dataBuffer = fs.readFileSync(req.file.path)
 
     pdf(dataBuffer).then(function (data) {
-        // number of pages
-        console.log(data.numpages);
-        // number of rendered pages
-        console.log(data.numrender);
-        // PDF info
-        console.log(data.info);
-        // PDF metadata
-        console.log(data.metadata);
-        // PDF.js version
-        // check https://mozilla.github.io/pdf.js/getting_started/
-        console.log(data.version);
-        // PDF text
-        console.log(data.text);
-        res.json({ dataBuffer })
+        const resume = new Resume({ filename: req.file.originalname, data: data.text })
+        resume.save()
+        return res.status(200).json({ message: "Saved successfully" })
     });
+
     main();
 }
 
