@@ -4,7 +4,6 @@ import fs from "fs"
 import pdf from "pdf-parse"
 import { GoogleGenAI } from "@google/genai";
 import Resume from "../model/Resume.js"
-import { log } from 'console';
 
 const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
@@ -13,20 +12,32 @@ async function main(contents) {
         model: process.env.GEMINI_MODEL,
         contents: contents,
     });
-    console.log(response.text);
+
+    return response.text
 }
 
 const analyzeResume = async (req, res) => {
     if (!req.file) return res.status(404).json({ message: "Please input your resume" })
 
-    let dataBuffer = fs.readFileSync(req.file.path)
+    try {
+        const dataBuffer = fs.readFileSync(req.file.path)
+        const data = await pdf(dataBuffer)
 
-    pdf(dataBuffer).then(function (data) {
-        const resume = new Resume({ filename: req.file.originalname, data: data.text })
-        resume.save()
-        main(process.env.GEMINI_CONTENTS.concat(" ", data.text));
+        const analyzedResume = await main(process.env.GEMINI_CONTENTS.concat(" ", data.text))
+
+        const resume = new Resume({
+            filename: req.file.originalname,
+            data: data.text,
+            aiData: analyzedResume,
+        });
+
+        await resume.save()
+
         return res.status(200).json({ message: "Saved successfully" })
-    });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: "An error occurred while analyzing the resume." });
+    }
 }
 
 export default analyzeResume

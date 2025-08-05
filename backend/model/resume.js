@@ -9,7 +9,6 @@ const Resume = sequelize.define(
             type: DataTypes.INTEGER,
             allowNull: false,
             autoIncrement: true,
-            unique: true,
         },
         filename: {
             type: DataTypes.STRING,
@@ -18,6 +17,10 @@ const Resume = sequelize.define(
         data: {
             type: DataTypes.BLOB('long'),
             allowNull: false
+        },
+        aiData: {
+            type: DataTypes.BLOB('long'),
+            allowNull: true
         }
     },
     {
