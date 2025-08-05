@@ -15,7 +15,7 @@ app.set("views", "./views")
 
 app.use(express.json())
 app.use("/", userRoutes)
-app.use("/resume", resumeRoutes)
+app.use("/analyze-resume", resumeRoutes)
 
 app.get("/welcome", (req, res) => {
     res.json("Welcome")

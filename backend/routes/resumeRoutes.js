@@ -20,6 +20,6 @@ router.get("/", (req, res) => {
     return res.render("uploadResume")
 })
 
-router.post("/upload", upload.single('resume'), analyzeResume)
+router.post("/", upload.single('resume'), analyzeResume)
 
 export default router
