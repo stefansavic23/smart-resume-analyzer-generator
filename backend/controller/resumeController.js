@@ -4,14 +4,14 @@ import fs from "fs"
 import pdf from "pdf-parse"
 import { GoogleGenAI } from "@google/genai";
 import Resume from "../model/Resume.js"
+import { log } from 'console';
 
-// The client gets the API key from the environment variable `GEMINI_API_KEY`.
 const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
-async function main() {
+async function main(contents) {
     const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: "Explain how AI works in a few words",
+        model: process.env.GEMINI_MODEL,
+        contents: contents,
     });
     console.log(response.text);
 }
@@ -24,10 +24,9 @@ const analyzeResume = async (req, res) => {
     pdf(dataBuffer).then(function (data) {
         const resume = new Resume({ filename: req.file.originalname, data: data.text })
         resume.save()
+        main(process.env.GEMINI_CONTENTS.concat(" ", data.text));
         return res.status(200).json({ message: "Saved successfully" })
     });
-
-    main();
 }
 
 export default analyzeResume
