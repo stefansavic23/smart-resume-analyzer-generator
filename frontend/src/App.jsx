@@ -4,7 +4,7 @@ import RegisterLogin from './components/RegisterLogin.jsx'
 function App() {
   return (
     <>
-      <RegisterLogin title="Login" action="/login" btn="Login" />
+      <RegisterLogin title="Register" action="/register" btn="Register" />
     </>
   )
 }
