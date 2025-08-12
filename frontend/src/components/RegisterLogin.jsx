@@ -4,7 +4,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 import Typography from '@mui/material/Typography';
@@ -28,8 +27,31 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 const RegisterLogin = (props) => {
-    const [emailValue, setEmailValue] = useState('')
-    const [passwordValue, setPasswordValue] = useState('')
+    const [email, setEmailValue] = useState('')
+    const [password, setPasswordValue] = useState('')
+    const [isPending, setIsPending] = useState(false)
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        const user = { email, password }
+        console.log(user);
+
+        setIsPending(true)
+
+        fetch("http://localhost:5173/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "Application/JSON",
+            },
+            body: JSON.stringify(user)
+        }).then(() => {
+            console.log("user registered successfully")
+            setIsPending(false)
+        }).catch(error => {
+            console.log(error)
+        })
+    }
 
     return (
         <ThemeProvider theme={darkTheme}>
@@ -38,22 +60,21 @@ const RegisterLogin = (props) => {
                 <Typography variant="h4" gutterBottom>
                     {props.title}
                 </Typography>
-
-                <Grid container maxWidth={"md"} spacing={2}>
+                <form maxWidth={"md"} spacing={4} onSubmit={handleSubmit}>
                     <Grid size={6} display="flex" justifyContent="center" alignItems="center">
-                        <TextField value={emailValue} onChange={(event) => setEmailValue(event.target.value)} id="standard-basic" name="email" label="Email" variant="standard" />
+                        <TextField value={email} onChange={(event) => setEmailValue(event.target.value)} id="standard-basic" name="email" label="Email" variant="standard" />
                     </Grid>
                     <Grid size={6} display="flex" justifyContent="center" alignItems="center">
-                        <TextField value={passwordValue} onChange={(event) => setPasswordValue(event.target.value)} type="password" id="standard-basic" label="Password" variant="standard" />
+                        <TextField value={password} onChange={(event) => setPasswordValue(event.target.value)} type="password" id="standard-basic" label="Password" variant="standard" />
                     </Grid>
                     <Grid size={12} display={"flex"} justifyContent={"center"}>
-                        <Button variant="text" type="submit">{props.btn}</Button>
+                        {!isPending && <Button variant="text" type="submit">{props.btn}</Button>}
+                        {isPending && <Button variant="text" type="submit" disabled>Loading</Button>}
                     </Grid>
-                </Grid>
+                </form>
             </Box>
         </ThemeProvider>
     )
 }
 
 export default RegisterLogin
-
