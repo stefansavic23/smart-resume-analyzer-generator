@@ -34,10 +34,7 @@ const RegisterLogin = (props) => {
     const handleSubmit = async(e) => {
         e.preventDefault()
 
-        const user = { email, password }
-        console.log(user);
-
-        await axios.post("http://localhost:3000/register", {
+        await axios.post(`http://localhost:3000${props.action}`, {
             email: JSON.stringify(email),
             password: JSON.stringify(password)
         }).then((response) => {
@@ -54,7 +51,7 @@ const RegisterLogin = (props) => {
                 <Typography variant="h4" gutterBottom>
                     {props.title}
                 </Typography>
-                <form maxWidth={"md"} spacing={4} onSubmit={handleSubmit}>
+                <form spacing={4} onSubmit={handleSubmit}>
                     <Grid size={6} display="flex" justifyContent="center" alignItems="center">
                         <TextField value={email} onChange={(event) => setEmailValue(event.target.value)} id="standard-basic" label="Email" variant="standard" />
                     </Grid>
