@@ -3,17 +3,18 @@ import express from "express"
 import userRoutes from "./routes/userRoutes.js"
 import resumeRoutes from './routes/resumeRoutes.js'
 import sequelize from "./util/database.js"
+import bodyParser from "body-parser"
 import "./model/Resume.js"
 import "./model/User.js"
 import User from "./model/User.js"
 import Resume from "./model/Resume.js"
+import cors from "cors"
 
 const app = express()
 
-app.set("view engine", "ejs")
-app.set("views", "./views")
-
-app.use(express.json())
+app.use(cors())
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json())
 app.use("/", userRoutes)
 app.use("/analyze-resume", resumeRoutes)
 
