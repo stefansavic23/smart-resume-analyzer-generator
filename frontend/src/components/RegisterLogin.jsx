@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 import Typography from '@mui/material/Typography';
+import axios from "axios"
 
 const darkTheme = createTheme({
     palette: {
@@ -29,26 +30,19 @@ const Item = styled(Paper)(({ theme }) => ({
 const RegisterLogin = (props) => {
     const [email, setEmailValue] = useState('')
     const [password, setPasswordValue] = useState('')
-    const [isPending, setIsPending] = useState(false)
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault()
 
         const user = { email, password }
         console.log(user);
 
-        setIsPending(true)
-
-        fetch("http://localhost:5173/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "Application/JSON",
-            },
-            body: JSON.stringify(user)
-        }).then(() => {
-            console.log("user registered successfully")
-            setIsPending(false)
-        }).catch(error => {
+        await axios.post("http://localhost:3000/register", {
+            email: JSON.stringify(email),
+            password: JSON.stringify(password)
+        }).then((response) => {
+            console.log(response)
+        }).catch((error) => {
             console.log(error)
         })
     }
@@ -62,14 +56,13 @@ const RegisterLogin = (props) => {
                 </Typography>
                 <form maxWidth={"md"} spacing={4} onSubmit={handleSubmit}>
                     <Grid size={6} display="flex" justifyContent="center" alignItems="center">
-                        <TextField value={email} onChange={(event) => setEmailValue(event.target.value)} id="standard-basic" name="email" label="Email" variant="standard" />
+                        <TextField value={email} onChange={(event) => setEmailValue(event.target.value)} id="standard-basic" label="Email" variant="standard" />
                     </Grid>
                     <Grid size={6} display="flex" justifyContent="center" alignItems="center">
                         <TextField value={password} onChange={(event) => setPasswordValue(event.target.value)} type="password" id="standard-basic" label="Password" variant="standard" />
                     </Grid>
                     <Grid size={12} display={"flex"} justifyContent={"center"}>
-                        {!isPending && <Button variant="text" type="submit">{props.btn}</Button>}
-                        {isPending && <Button variant="text" type="submit" disabled>Loading</Button>}
+                        <Button variant="text" type="submit">{props.btn}</Button>
                     </Grid>
                 </form>
             </Box>
