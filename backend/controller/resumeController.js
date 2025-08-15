@@ -17,13 +17,15 @@ async function main(contents) {
 }
 
 const analyzeResume = async (req, res) => {
+    const jobDescription = req.body
+
     if (!req.file) return res.status(404).json({ message: "Please input your resume" })
 
     try {
         const dataBuffer = fs.readFileSync(req.file.path)
         const data = await pdf(dataBuffer)
 
-        const analyzedResume = await main(process.env.GEMINI_CONTENTS.concat(" ", data.text))
+        const analyzedResume = await main(process.env.GEMINI_CONTENTS.concat(" ", data.text, jobDescription))
 
         const resume = new Resume({
             filename: req.file.originalname,
