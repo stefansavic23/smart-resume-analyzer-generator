@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useState } from "react"
 import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -31,7 +31,7 @@ const RegisterLogin = (props) => {
     const [email, setEmailValue] = useState('')
     const [password, setPasswordValue] = useState('')
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
         await axios.post(`http://localhost:3000${props.action}`, {

@@ -4,11 +4,7 @@ import RegisterLogin from './components/RegisterLogin.jsx'
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path='/' element={<RegisterLogin title="Register" action="/register" btn="Register" />} />
-      </Routes>
-    </Router>
+    <RegisterLogin title="Login" action="/login" btn="Login" />
   )
 }
 
