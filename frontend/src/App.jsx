@@ -4,7 +4,7 @@ import RegisterLogin from './components/RegisterLogin.jsx'
 
 function App() {
   return (
-    <RegisterLogin title="Login" action="/login" btn="Login" />
+    <h1>Welcome to analyze resume app</h1>
   )
 }
 

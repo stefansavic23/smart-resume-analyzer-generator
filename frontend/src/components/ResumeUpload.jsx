@@ -42,20 +42,20 @@ const ResumeUpload = (props) => {
                         <Button
                             component="label"
                             role={undefined}
+                            id="uploadResumeBtn"
                             variant="contained"
                             tabIndex={-1}
                             startIcon={<CloudUploadIcon />}
                         >
-                            Upload files
+                            Upload resume
                             <VisuallyHiddenInput
                                 type="file"
                                 onChange={(event) => console.log(event.target.files)}
-                                multiple
                             />
                         </Button>
                     </Grid>
                     <Grid size={12} display={"flex"} justifyContent={"center"}>
-                        <Button variant="text" type="submit">Analyze</Button>
+                        <Button id="analyzeBtn" variant="text" type="submit">Analyze</Button>
                     </Grid>
                 </form>
             </Box>
