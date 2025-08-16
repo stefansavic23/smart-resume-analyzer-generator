@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -38,7 +38,7 @@ const RegisterLogin = (props) => {
             email: JSON.stringify(email),
             password: JSON.stringify(password)
         }).then((response) => {
-            console.log(response)
+            localStorage.setItem("token", response.data.accessToken)
         }).catch((error) => {
             console.log(error)
         })
