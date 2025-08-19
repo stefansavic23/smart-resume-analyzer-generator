@@ -7,6 +7,8 @@ import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 import Typography from '@mui/material/Typography';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import axios from "axios";
+import { useState } from 'react';
 
 const darkTheme = createTheme({
     palette: {
@@ -27,6 +29,34 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const ResumeUpload = (props) => {
+    const [selectedResume, setSelectedResume] = useState(null)
+
+    const handleResumeChange = (e) => {
+        setSelectedResume(e.target.files[0])
+    }
+
+    const handleUpload = async (e) => {
+        /*
+        if (!selectedResume) {
+            return alert('Select your resume first!')
+        }
+        */
+        const formData = new FormData()
+        formData.append('resume', selectedResume)
+
+        try {
+            const response = await axios.post('/analyze-resume', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+            console.log("File upload successfully: ", response)
+        } catch (error) {
+            console.log("Error uploading file: ", error)
+        }
+
+    }
+
     return (
         <ThemeProvider theme={darkTheme}>
             <CssBaseline />
@@ -34,7 +64,7 @@ const ResumeUpload = (props) => {
                 <Typography variant="h4" gutterBottom>
                     Upload your resume
                 </Typography>
-                <form spacing={4}>
+                <form spacing={4} onSubmit={handleUpload}>
                     <Grid size={6} display="flex" justifyContent="center" alignItems="center">
                         <TextField id="standard-basic" label="Job Description" variant="standard" />
                     </Grid>
@@ -50,7 +80,7 @@ const ResumeUpload = (props) => {
                             Upload resume
                             <VisuallyHiddenInput
                                 type="file"
-                                onChange={(event) => console.log(event.target.files)}
+                                onChange={handleResumeChange}
                             />
                         </Button>
                     </Grid>
