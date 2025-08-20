@@ -17,9 +17,10 @@ async function main(contents) {
 }
 
 const analyzeResume = async (req, res) => {
-    const jobDescription = req.body
+    const { jobDescription } = req.body
 
     if (!req.file) return res.status(404).json({ message: "Please input your resume" })
+    if (!jobDescription) return res.status(404).json({ message: "Please enter your job description" })
 
     try {
         const dataBuffer = fs.readFileSync(req.file.path)
