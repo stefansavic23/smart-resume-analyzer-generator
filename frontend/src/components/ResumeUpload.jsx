@@ -30,27 +30,34 @@ const VisuallyHiddenInput = styled('input')({
 
 const ResumeUpload = (props) => {
     const [selectedResume, setSelectedResume] = useState(null)
+    const [jobDescription, setJobDescription] = useState("")
 
     const handleResumeChange = (e) => {
         setSelectedResume(e.target.files[0])
     }
 
     const handleUpload = async (e) => {
-        /*
+        e.preventDefault()
+
+        if (jobDescription === '') {
+            return alert("Enter your job description!")
+        }
+
         if (!selectedResume) {
             return alert('Select your resume first!')
         }
-        */
+
         const formData = new FormData()
         formData.append('resume', selectedResume)
+        formData.append('jobDescription', jobDescription)
 
         try {
-            const response = await axios.post('/analyze-resume', formData, {
+            const response = await axios.post('http://localhost:3000/analyze-resume', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             })
-            console.log("File upload successfully: ", response)
+            console.log("File upload successfully: ", response.data)
         } catch (error) {
             console.log("Error uploading file: ", error)
         }
@@ -66,7 +73,7 @@ const ResumeUpload = (props) => {
                 </Typography>
                 <form spacing={4} onSubmit={handleUpload}>
                     <Grid size={6} display="flex" justifyContent="center" alignItems="center">
-                        <TextField id="standard-basic" label="Job Description" variant="standard" />
+                        <TextField onChange={(event) => setJobDescription(event.target.value)} id="standard-basic" label="Job Description" variant="standard" />
                     </Grid>
                     <Grid size={6} display="flex" justifyContent="center" alignItems="center">
                         <Button
