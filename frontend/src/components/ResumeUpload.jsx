@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import axios from "axios";
 import { useState } from 'react';
+import Stack from '@mui/material/Stack';
 
 const darkTheme = createTheme({
     palette: {
@@ -31,6 +32,7 @@ const VisuallyHiddenInput = styled('input')({
 const ResumeUpload = (props) => {
     const [selectedResume, setSelectedResume] = useState(null)
     const [jobDescription, setJobDescription] = useState("")
+    const [isLoading, setIsLoading] = useState(true)
 
     const handleResumeChange = (e) => {
         setSelectedResume(e.target.files[0])
@@ -52,11 +54,13 @@ const ResumeUpload = (props) => {
         formData.append('jobDescription', jobDescription)
 
         try {
+            setIsLoading(false)
             const response = await axios.post('http://localhost:3000/analyze-resume', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             })
+            setIsLoading(true)
             console.log("File upload successfully: ", response.data)
         } catch (error) {
             console.log("Error uploading file: ", error)
@@ -92,7 +96,16 @@ const ResumeUpload = (props) => {
                         </Button>
                     </Grid>
                     <Grid size={12} display={"flex"} justifyContent={"center"}>
-                        <Button id="analyzeBtn" variant="text" type="submit">Analyze</Button>
+                        {isLoading ?
+                            <Button id="analyzeBtn" variant="text" type="submit">Analyze</Button>
+
+                            : <Stack direction="row" spacing={2}>
+                                <Button loading variant="outlined">
+                                    Submit
+                                </Button>
+                            </Stack>
+                        }
+
                     </Grid>
                 </form>
             </Box>
