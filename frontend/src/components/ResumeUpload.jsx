@@ -1,4 +1,5 @@
 import React from "react"
+import "../App.css"
 import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -100,7 +101,7 @@ const ResumeUpload = (props) => {
                             <Button id="analyzeBtn" variant="text" type="submit">Analyze</Button>
 
                             : <Stack direction="row" spacing={2}>
-                                <Button loading variant="outlined">
+                                <Button loading variant="outlined" id="loadingBtn">
                                     Submit
                                 </Button>
                             </Stack>
