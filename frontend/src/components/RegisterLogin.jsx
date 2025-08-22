@@ -34,6 +34,14 @@ const RegisterLogin = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        const isValidEmail = (email) => emailRegex.test(email)
+
+        if (email === '') return alert("Enter your email address")
+        if (isValidEmail == true) return alert("Invalid email address")
+        if (password === '') return alert("Enter your password")
+
         await axios.post(`http://localhost:3000${props.action}`, {
             email: JSON.stringify(email),
             password: JSON.stringify(password)
