@@ -4,6 +4,7 @@ import fs from "fs"
 import pdf from "pdf-parse"
 import { GoogleGenAI } from "@google/genai";
 import Resume from "../model/Resume.js"
+import Analysis from '../model/Analysis.js';
 
 const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
@@ -31,10 +32,16 @@ const analyzeResume = async (req, res) => {
         const resume = new Resume({
             filename: req.file.originalname,
             data: data.text,
+        });
+
+        const aiResume = new Analysis({
+            filename: req.file.originalname,
             aiData: analyzedResume,
         });
 
+
         await resume.save()
+        await aiResume.save()
 
         return res.status(200).json({ message: "Saved successfully" })
     } catch (err) {

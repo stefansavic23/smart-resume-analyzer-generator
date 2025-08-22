@@ -1,8 +1,8 @@
 import sequelize from "../util/database.js";
 import { DataTypes } from "sequelize";
 
-const Resume = sequelize.define(
-    'Resume',
+const Analysis = sequelize.define(
+    'Analysis',
     {
         id: {
             primaryKey: true,
@@ -14,14 +14,14 @@ const Resume = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        data: {
+        aiData: {
             type: DataTypes.BLOB('long'),
-            allowNull: false
-        },
+            allowNull: true
+        }
     },
     {
         timestamps: true
     }
 );
 
-export default Resume
+export default Analysis

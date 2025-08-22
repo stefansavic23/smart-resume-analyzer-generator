@@ -8,6 +8,7 @@ import "./model/Resume.js"
 import "./model/User.js"
 import User from "./model/User.js"
 import Resume from "./model/Resume.js"
+import Analysis from "./model/Analysis.js"
 import cors from "cors"
 
 const app = express()
