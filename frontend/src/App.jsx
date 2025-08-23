@@ -1,5 +1,4 @@
 import './App.css'
-import { useNavigate } from "react-router-dom"
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
@@ -14,8 +13,6 @@ const darkTheme = createTheme({
 });
 
 function App() {
-  const navigate = useNavigate()
-
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
