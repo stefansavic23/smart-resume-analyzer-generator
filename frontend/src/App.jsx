@@ -1,10 +1,45 @@
 import './App.css'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import RegisterLogin from './components/RegisterLogin.jsx'
+import { useNavigate } from "react-router-dom"
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 function App() {
+  const navigate = useNavigate()
+
   return (
-    <h1>Welcome to analyze resume app</h1>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <Container maxWidth='sm'>
+        <Grid justifyItems={'center'}>
+          <Typography variant='h4'>
+            Welcome!
+          </Typography>
+          <Typography variant='body1'>
+            To analyze your resume you need to login or register
+          </Typography>
+          <Typography variant='body1'>
+            <Link href='/login' underline='none' sx={{margin:'10px'}}>
+              Login
+            </Link>
+            or 
+            <Link href='/register' underline='none' sx={{margin: '10px'}}>
+              Register
+            </Link>
+          </Typography>
+
+        </Grid>
+      </Container>
+    </ThemeProvider>
   )
 }
 
