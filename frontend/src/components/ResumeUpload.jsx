@@ -1,4 +1,5 @@
-import React from "react"
+import React, { use } from "react"
+import ReactMarkdown from 'react-markdown'
 import "../App.css"
 import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,6 +12,8 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import axios from "axios";
 import { useState } from 'react';
 import Stack from '@mui/material/Stack';
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 
 const darkTheme = createTheme({
     palette: {
@@ -34,6 +37,7 @@ const ResumeUpload = (props) => {
     const [selectedResume, setSelectedResume] = useState(null)
     const [jobDescription, setJobDescription] = useState("")
     const [isLoading, setIsLoading] = useState(true)
+    const [aiResume, setAiResume] = useState("")
 
     const handleResumeChange = (e) => {
         setSelectedResume(e.target.files[0])
@@ -62,9 +66,10 @@ const ResumeUpload = (props) => {
                 },
             })
             setIsLoading(true)
-            console.log("File upload successfully: ", response.data)
+            setAiResume(response.data.message)
+            //console.log("File upload successfully: ", response.data.message)
         } catch (error) {
-            console.log("Error uploading file: ", error)
+            console.error("Error uploading file: ", error)
         }
 
     }
@@ -98,15 +103,29 @@ const ResumeUpload = (props) => {
                     </Grid>
                     <Grid size={12} display={"flex"} justifyContent={"center"}>
                         {isLoading ?
-                            <Button id="analyzeBtn" variant="text" type="submit">Analyze</Button>
-
-                            : <Stack direction="row" spacing={2}>
+                            <Stack direction="row" spacing={2}>
+                                <Button id="analyzeBtn" variant="text" type="submit">Analyze</Button>
+                            </Stack>
+                            : <Stack direction="row">
                                 <Button loading variant="outlined" id="loadingBtn">
                                     Submit
                                 </Button>
                             </Stack>
                         }
-
+                    </Grid>
+                    <Grid size={12} display="flex" justifyContent="center">
+                        {aiResume && (
+                            <Card sx={{ mt: 2, maxWidth: "600px", maxHeight: "400px", overflowY: "auto" }}>
+                                <CardContent>
+                                    <Typography variant="h6" gutterBottom>
+                                        AI Resume Analysis
+                                    </Typography>
+                                    <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
+                                        {aiResume}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        )}
                     </Grid>
                 </form>
             </Box>
