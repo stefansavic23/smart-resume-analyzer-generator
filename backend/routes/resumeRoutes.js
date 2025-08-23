@@ -16,10 +16,6 @@ const upload = multer({ storage })
 
 const router = express.Router()
 
-router.get("/", (req, res) => {
-    return res.render("uploadResume")
-})
-
 router.post("/", upload.single('resume'), analyzeResume)
 
 export default router

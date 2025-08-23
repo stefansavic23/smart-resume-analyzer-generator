@@ -39,11 +39,10 @@ const analyzeResume = async (req, res) => {
             aiData: analyzedResume,
         });
 
-
         await resume.save()
         await aiResume.save()
 
-        return res.status(200).json({ message: "Saved successfully" })
+        return res.status(200).json({ message: analyzedResume })
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: "An error occurred while analyzing the resume." });
