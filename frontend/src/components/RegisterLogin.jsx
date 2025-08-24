@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 import Typography from '@mui/material/Typography';
 import axios from "axios"
+import {useNavigate} from "react-router-dom"
 
 const darkTheme = createTheme({
     palette: {
@@ -15,25 +16,30 @@ const darkTheme = createTheme({
 });
 
 const RegisterLogin = (props) => {
+    const navigate = useNavigate()
+
     const [email, setEmailValue] = useState('')
     const [password, setPasswordValue] = useState('')
+
+    const validateEmail = (email) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        return regex.test(email)
+    } 
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-        const isValidEmail = (email) => emailRegex.test(email)
-
         if (email === '') return alert("Enter your email address")
-        if (isValidEmail == true) return alert("Invalid email address")
+        if (validateEmail(email) == false) return alert("Invalid email address")
         if (password === '') return alert("Enter your password")
 
         await axios.post(`http://localhost:3000${props.action}`, {
             email: JSON.stringify(email),
             password: JSON.stringify(password)
         }).then((response) => {
-            localStorage.setItem("token", response.data.accessToken)
+            localStorage.setItem("accessToken", response.data.accessToken)
+            navigate("/analyze-resume")
         }).catch((error) => {
             console.log(error)
         })

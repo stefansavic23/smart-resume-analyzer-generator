@@ -1,6 +1,7 @@
 import React, { use } from "react"
 import ReactMarkdown from 'react-markdown'
 import "../App.css"
+import { useNavigate } from "react-router-dom";
 import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -39,6 +40,8 @@ const ResumeUpload = (props) => {
     const [isLoading, setIsLoading] = useState(true)
     const [aiResume, setAiResume] = useState("")
 
+    const navigate = useNavigate()
+
     const handleResumeChange = (e) => {
         setSelectedResume(e.target.files[0])
     }
@@ -59,17 +62,28 @@ const ResumeUpload = (props) => {
         formData.append('jobDescription', jobDescription)
 
         try {
+            const accessToken = localStorage.getItem("accessToken")
+
             setIsLoading(false)
             const response = await axios.post('http://localhost:3000/analyze-resume', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${accessToken}`
                 },
             })
+
             setIsLoading(true)
             setAiResume(response.data.message)
-            //console.log("File upload successfully: ", response.data.message)
+            console.log("File upload successfully")
+
+
         } catch (error) {
-            console.error("Error uploading file: ", error)
+            if (error.status !== 403) {
+                return alert("Error uploading resume")
+            }
+
+            alert("First login or register to analyze your resume")
+            navigate("/")
         }
 
     }
