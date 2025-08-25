@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 import Typography from '@mui/material/Typography';
 import axios from "axios"
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const darkTheme = createTheme({
     palette: {
@@ -25,7 +25,7 @@ const RegisterLogin = (props) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         return regex.test(email)
-    } 
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -41,6 +41,12 @@ const RegisterLogin = (props) => {
             localStorage.setItem("accessToken", response.data.accessToken)
             navigate("/analyze-resume")
         }).catch((error) => {
+            if (error.status == 404) {
+                return alert("Email not found")
+            } else if (error.status == 401) {
+                return alert("Incorrect password")
+            }
+
             console.log(error)
         })
     }
