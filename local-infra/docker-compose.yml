@@ -1,0 +1,19 @@
+name: 'smart-resume'
+
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: toor
+      MARIADB_DATABASE: smart_resume
+      MARIADB_USER: sm 
+      MARIADB_PASSWORD: sm123 
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    restart: unless-stopped 
+
+volumes:
+  mariadb_data: 
