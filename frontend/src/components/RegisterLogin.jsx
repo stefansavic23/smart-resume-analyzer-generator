@@ -35,8 +35,8 @@ const RegisterLogin = (props) => {
         if (password === '') return alert("Enter your password")
 
         await axios.post(`http://localhost:3000${props.action}`, {
-            email: JSON.stringify(email),
-            password: JSON.stringify(password)
+            email: email,
+            password: password
         }).then((response) => {
             localStorage.setItem("accessToken", response.data.accessToken)
             navigate("/analyze-resume")
