@@ -6,9 +6,7 @@ import sequelize from "./util/database.js"
 import bodyParser from "body-parser"
 import "./model/Resume.js"
 import "./model/User.js"
-import User from "./model/User.js"
-import Resume from "./model/Resume.js"
-import Analysis from "./model/Analysis.js"
+import "./associations/associations.js"
 import cors from "cors"
 
 const app = express()
@@ -26,9 +24,7 @@ app.get("/welcome", (req, res) => {
 try {
     await sequelize.authenticate();
     console.log('DB connected');
-    await sequelize.sync({ force: false });
-    User.hasOne(Resume)
-    Resume.belongsTo(User)
+    await sequelize.sync({ force: true });
     app.listen(process.env.PORT, () => {
         console.log(`Server running on port http://localhost:${process.env.PORT}`)
     })

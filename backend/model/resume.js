@@ -4,12 +4,6 @@ import { DataTypes } from "sequelize";
 const Resume = sequelize.define(
     'Resume',
     {
-        id: {
-            primaryKey: true,
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            autoIncrement: true,
-        },
         filename: {
             type: DataTypes.STRING,
             allowNull: false,

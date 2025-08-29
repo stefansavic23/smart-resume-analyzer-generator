@@ -4,13 +4,6 @@ import { DataTypes } from "sequelize";
 const User = sequelize.define(
     'User',
     {
-        id: {
-            primaryKey: true,
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            autoIncrement: true,
-            unique: true,
-        },
         email: {
             type: DataTypes.STRING,
             allowNull: false,

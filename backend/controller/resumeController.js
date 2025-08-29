@@ -5,7 +5,6 @@ import pdf from "pdf-parse"
 import { GoogleGenAI } from "@google/genai";
 import Resume from "../model/Resume.js"
 import Analysis from '../model/Analysis.js';
-import { error, log } from 'console';
 
 const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
