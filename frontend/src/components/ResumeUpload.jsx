@@ -1,5 +1,3 @@
-import React, { use } from "react"
-import ReactMarkdown from 'react-markdown'
 import "../App.css"
 import { useNavigate } from "react-router-dom";
 import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
