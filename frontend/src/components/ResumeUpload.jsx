@@ -15,6 +15,8 @@ import { useState } from 'react';
 import Stack from '@mui/material/Stack';
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import Alert from '@mui/material/Alert';
+
 
 const darkTheme = createTheme({
     palette: {
@@ -39,6 +41,7 @@ const ResumeUpload = (props) => {
     const [jobDescription, setJobDescription] = useState("")
     const [isLoading, setIsLoading] = useState(true)
     const [aiResume, setAiResume] = useState("")
+    const [errorMessage, setErrorMessage] = useState("")
 
     const navigate = useNavigate()
 
@@ -50,11 +53,11 @@ const ResumeUpload = (props) => {
         e.preventDefault()
 
         if (jobDescription === '') {
-            return alert("Enter your job description!")
+            return setErrorMessage("Enter your job description")
         }
 
         if (!selectedResume) {
-            return alert('Select your resume first!')
+            return setErrorMessage("Select your resume file")
         }
 
         const formData = new FormData()
@@ -64,7 +67,9 @@ const ResumeUpload = (props) => {
         try {
             const accessToken = localStorage.getItem("accessToken")
 
+            setErrorMessage(null)
             setIsLoading(false)
+
             const response = await axios.post('http://localhost:3000/analyze-resume', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -79,10 +84,10 @@ const ResumeUpload = (props) => {
 
         } catch (error) {
             if (error.status !== 403) {
-                return alert("Error uploading resume")
+                return setErrorMessage("Error uploading resume")
             }
 
-            alert("First login or register to analyze your resume")
+            setErrorMessage("First login or register to analyze your resume")
             navigate("/")
         }
 
@@ -96,8 +101,19 @@ const ResumeUpload = (props) => {
                     Upload your resume
                 </Typography>
                 <form spacing={4} onSubmit={handleUpload}>
+                    {errorMessage && (
+                        <Stack sx={{ width: '100%' }} spacing={2}>
+                            <Alert severity="error">{errorMessage}</Alert>
+                        </Stack>)
+                    }
                     <Grid size={6} display="flex" justifyContent="center" alignItems="center">
-                        <TextField onChange={(event) => setJobDescription(event.target.value)} id="standard-basic" label="Job Description" variant="standard" />
+                        <TextField
+                            onChange={(event) => setJobDescription(event.target.value)}
+                            id="standard-basic"
+                            label="Job Description"
+                            variant="standard"
+                            required={true}
+                        />
                     </Grid>
                     <Grid size={6} display="flex" justifyContent="center" alignItems="center">
                         <Button

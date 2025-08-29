@@ -57,7 +57,13 @@ const RegisterLogin = (props) => {
                         </Stack>)
                     }
                     <Grid size={6} display="flex" justifyContent="center" alignItems="center">
-                        <TextField value={email} onChange={(event) => setEmailValue(event.target.value)} id="standard-basic" label="Email" variant="standard" required={true} />
+                        <TextField value={email}
+                            onChange={(event) => setEmailValue(event.target.value)}
+                            id="standard-basic"
+                            label="Email"
+                            variant="standard"
+                            required={true}
+                        />
                     </Grid>
                     <Grid size={6} display="flex" justifyContent="center" alignItems="center">
                         <TextField
