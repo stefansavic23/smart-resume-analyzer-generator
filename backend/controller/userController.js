@@ -3,41 +3,21 @@ import 'dotenv/config'
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import User from "../model/User.js"
-import passwordValidator from "password-validator"
-import isValidEmail from '../util/isValidEmail.js'
-
-const isValidPassword = (password) => {
-    const passwordSchema = new passwordValidator()
-
-    passwordSchema
-        .is().min(8)
-        .is().max(64)
-        .has().uppercase()
-        .has().lowercase()
-        .has().digits(2)
-        .has().not().spaces()
-
-
-    const result = passwordSchema.validate(password, { details: true })
-
-    if (result.length > 0) {
-        const messages = result.map(r => r.message)
-        return res.status(400).json(messages)
-    }
-}
+import checkEmail from '../utils/checkEmail.js'
+import checkPassword from '../utils/checkPassword.js'
 
 const login = async (req, res) => {
     try {
         const { email, password } = req.body
 
-        isValidEmail(email)
-        isValidPassword(password)
+        checkEmail(email)
+        checkPassword(password)
 
         const userData = { email, password }
 
         const user = await User.findOne({ where: { email } })
 
-        if (!user) return res.status(404).json({ message: "User doesn't exist" })
+        if (!user) return res.ßstatus(404).json({ message: "User doesn't exist" })
 
         userData["userId"] = user.id
 
@@ -58,8 +38,8 @@ const register = async (req, res) => {
     try {
         const { email, password } = req.body
 
-        isValidEmail(email)
-        isValidPassword(password)
+        checkEmail(email)
+        checkPassword(password)
 
         const hashedPassword = bcrypt.hash(password, 10)
         const userData = { email, hashedPassword }
