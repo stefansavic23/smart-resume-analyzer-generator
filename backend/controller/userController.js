@@ -17,7 +17,7 @@ const login = async (req, res) => {
 
         const user = await User.findOne({ where: { email } })
 
-        if (!user) return res.ßstatus(404).json({ message: "User doesn't exist" })
+        if (!user) return res.status(404).json({ message: "User doesn't exist" })
 
         userData["userId"] = user.id
 
