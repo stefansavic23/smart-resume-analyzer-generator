@@ -22,7 +22,7 @@ const analyzeResume = async (req, res) => {
 
     if (!req.file) return res.status(404).json({ message: "Please input your resume" })
     if (!jobDescription) return res.status(404).json({ message: "Please enter your job description" })
-
+    
     try {
         const dataBuffer = fs.readFileSync(req.file.path)
         const data = await pdf(dataBuffer)
@@ -32,11 +32,13 @@ const analyzeResume = async (req, res) => {
         const resume = new Resume({
             filename: req.file.originalname,
             data: data.text,
+            userID: req.user.userId
         });
-
+        
         const aiResume = new Analysis({
             filename: req.file.originalname,
             aiData: analyzedResume,
+            resumeID: req.user.userId
         });
 
         await resume.save()

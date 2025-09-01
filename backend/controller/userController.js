@@ -40,9 +40,12 @@ const login = async (req, res) => {
         isValidPassword(password)
 
         const userData = { email, password }
+
         const user = await User.findOne({ where: { email } })
 
         if (!user) return res.status(404).json({ message: "User doesn't exist" })
+
+        userData["userId"] = user.id
 
         bcrypt.compare(password, user.password, (err, result) => {
             if (err) throw err;
@@ -67,9 +70,11 @@ const register = async (req, res) => {
         const hashedPassword = bcrypt.hash(password, 10)
         const userData = { email, hashedPassword }
 
-        const accessToken = jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET)
-
         const user = await User.create({ email, password: (await hashedPassword).toString() })
+
+        userData["userId"] = user.id
+
+        const accessToken = jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET)
 
         await user.save()
         res.status(201).json({ accessToken: accessToken })

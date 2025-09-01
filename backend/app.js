@@ -24,7 +24,7 @@ app.get("/welcome", (req, res) => {
 try {
     await sequelize.authenticate();
     console.log('DB connected');
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false });
     app.listen(process.env.PORT, () => {
         console.log(`Server running on port http://localhost:${process.env.PORT}`)
     })
