@@ -2,7 +2,7 @@ import "dotenv/config"
 import express from "express"
 import userRoutes from "./routes/userRoutes.js"
 import resumeRoutes from './routes/resumeRoutes.js'
-import sequelize from "./util/database.js"
+import sequelize from "./model/database.js"
 import bodyParser from "body-parser"
 import "./model/Resume.js"
 import "./model/User.js"

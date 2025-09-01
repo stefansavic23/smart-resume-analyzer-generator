@@ -3,14 +3,8 @@ import 'dotenv/config'
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import User from "../model/User.js"
-import validator from "validator"
 import passwordValidator from "password-validator"
-
-const isValidEmail = (email) => {
-    if (validator.isEmail(email) === false) {
-        return res.status(400).json({ message: "Incorrect email" })
-    }
-}
+import isValidEmail from '../util/isValidEmail.js'
 
 const isValidPassword = (password) => {
     const passwordSchema = new passwordValidator()

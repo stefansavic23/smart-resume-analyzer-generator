@@ -1,4 +1,4 @@
-import sequelize from "../util/database.js";
+import sequelize from "./database.js";
 import { DataTypes } from "sequelize";
 
 const Resume = sequelize.define(
