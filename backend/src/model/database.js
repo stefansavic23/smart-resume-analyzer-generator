@@ -1,12 +1,11 @@
-import "dotenv/config";
+import { Sequelize } from "sequelize";
+import { DB_USER, DB, DB_DIALECT, DB_HOST, DB_PASSWORD, DB_PORT } from "../constants/database.js";
 
-import {Sequelize} from "sequelize";
 
-
-const sequelize = new Sequelize(process.env.DB, process.env.DB_USER, process.env.DB_PASSWORD, {
-    host: process.env.DB_HOST,
-    dialect: process.env.DB_DIALECT,
-    port: process.env.DB_PORT
+const sequelize = new Sequelize(DB, DB_USER, DB_PASSWORD, {
+    host: DB_HOST,
+    dialect: DB_DIALECT,
+    port: DB_PORT
 });
 
 
