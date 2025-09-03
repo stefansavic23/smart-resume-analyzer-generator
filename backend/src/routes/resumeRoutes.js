@@ -4,6 +4,7 @@ import multer from "multer"
 import analyzeResume from "../controller/resumeController.js"
 import authenticateToken from "../controller/authMiddleware.js"
 
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, '../backend/src/uploads')

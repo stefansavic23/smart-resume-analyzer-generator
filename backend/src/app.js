@@ -4,6 +4,7 @@ import resumeRoutes from './routes/resumeRoutes.js'
 import sequelize from "./model/database.js"
 import bodyParser from "body-parser"
 import { URL, PORT } from "./constants/app.js"
+import { API_PREFIX } from "./constants/api.js"
 import "./model/resume.js"
 import "./model/User.js"
 import "./associations/associations.js"
@@ -14,8 +15,8 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use("/", userRoutes)
-app.use("/analyze-resume", resumeRoutes)
+app.use(`${API_PREFIX}/`, userRoutes)
+app.use(`${API_PREFIX}/analyze-resume`, resumeRoutes)
 
 app.get("/welcome", (req, res) => {
     res.json("Welcome")
