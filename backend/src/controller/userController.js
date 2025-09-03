@@ -3,6 +3,7 @@ import bcrypt from "bcrypt"
 import User from "../model/User.js"
 import checkEmail from '../utils/checkEmail.js'
 import checkPassword from '../utils/checkPassword.js'
+import { ACCESS_TOKEN_SECRET } from "../constants/tokens.js"
 
 const login = async (req, res) => {
     try {
@@ -24,7 +25,7 @@ const login = async (req, res) => {
             if (result === false) {
                 return res.status(401).json({ message: "Incorrect password" })
             }
-            const accessToken = jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET)
+            const accessToken = jwt.sign(userData, ACCESS_TOKEN_SECRET)
             res.status(201).json({ accessToken: accessToken })
         })
     } catch (err) {
@@ -46,7 +47,7 @@ const register = async (req, res) => {
 
         userData["userId"] = user.id
 
-        const accessToken = jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET)
+        const accessToken = jwt.sign(userData, ACCESS_TOKEN_SECRET)
 
         await user.save()
         res.status(201).json({ accessToken: accessToken })
