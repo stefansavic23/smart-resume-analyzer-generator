@@ -4,7 +4,7 @@ import userRoutes from "./routes/userRoutes.js"
 import resumeRoutes from './routes/resumeRoutes.js'
 import sequelize from "./model/database.js"
 import bodyParser from "body-parser"
-import "./model/Resume.js"
+import "./model/resume.js"
 import "./model/User.js"
 import "./associations/associations.js"
 import cors from "cors"

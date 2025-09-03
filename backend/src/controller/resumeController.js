@@ -3,14 +3,15 @@ import 'dotenv/config'
 import fs from "fs"
 import pdf from "pdf-parse"
 import { GoogleGenAI } from "@google/genai";
-import Resume from "../model/Resume.js"
+import Resume from "../model/resume.js"
 import Analysis from '../model/Analysis.js';
+import {apiKey, apiModel, apiContents} from "../constants/api.js"
 
-const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
+const ai = new GoogleGenAI({ apiKey: apiKey});
 
 async function main(contents) {
     const response = await ai.models.generateContent({
-        model: process.env.GEMINI_MODEL,
+        model: apiModel,
         contents: contents,
     });
 
@@ -27,7 +28,7 @@ const analyzeResume = async (req, res) => {
         const dataBuffer = fs.readFileSync(req.file.path)
         const data = await pdf(dataBuffer)
 
-        const analyzedResume = await main(process.env.GEMINI_CONTENTS.concat(" ", data.text, jobDescription))
+        const analyzedResume = await main(apiContents.concat(" ", data.text, jobDescription))
 
         const resume = new Resume({
             filename: req.file.originalname,

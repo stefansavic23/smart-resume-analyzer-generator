@@ -1,5 +1,5 @@
 import User from "../model/User.js";
-import Resume from "../model/Resume.js";
+import Resume from "../model/resume.js";
 import Analysis from "../model/Analysis.js";
 
 User.hasMany(Resume, { foreignKey: 'userID' })

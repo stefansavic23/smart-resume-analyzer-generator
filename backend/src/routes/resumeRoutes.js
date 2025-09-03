@@ -6,7 +6,7 @@ import authenticateToken from "../controller/authMiddleware.js"
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './uploads')
+        cb(null, '../backend/src/uploads')
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname)
