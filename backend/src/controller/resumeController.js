@@ -1,13 +1,11 @@
-import 'dotenv/config'
-
 import fs from "fs"
 import pdf from "pdf-parse"
 import { GoogleGenAI } from "@google/genai";
 import Resume from "../model/resume.js"
 import Analysis from '../model/Analysis.js';
-import {apiKey, apiModel, apiContents} from "../constants/api.js"
+import { apiKey, apiModel, apiContents } from "../constants/api.js"
 
-const ai = new GoogleGenAI({ apiKey: apiKey});
+const ai = new GoogleGenAI({ apiKey: apiKey });
 
 async function main(contents) {
     const response = await ai.models.generateContent({
@@ -23,7 +21,7 @@ const analyzeResume = async (req, res) => {
 
     if (!req.file) return res.status(404).json({ message: "Please input your resume" })
     if (!jobDescription) return res.status(404).json({ message: "Please enter your job description" })
-    
+
     try {
         const dataBuffer = fs.readFileSync(req.file.path)
         const data = await pdf(dataBuffer)
@@ -35,7 +33,7 @@ const analyzeResume = async (req, res) => {
             data: data.text,
             userID: req.user.userId
         });
-        
+
         const aiResume = new Analysis({
             filename: req.file.originalname,
             aiData: analyzedResume,

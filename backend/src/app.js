@@ -4,6 +4,7 @@ import userRoutes from "./routes/userRoutes.js"
 import resumeRoutes from './routes/resumeRoutes.js'
 import sequelize from "./model/database.js"
 import bodyParser from "body-parser"
+import {PORT} from "./constants/app.js"
 import "./model/resume.js"
 import "./model/User.js"
 import "./associations/associations.js"
@@ -25,8 +26,8 @@ try {
     await sequelize.authenticate();
     console.log('DB connected');
     await sequelize.sync({ force: false });
-    app.listen(process.env.PORT, () => {
-        console.log(`Server running on port http://localhost:${process.env.PORT}`)
+    app.listen(PORT, () => {
+        console.log(`Server running on port http://localhost:${PORT}`)
     })
 } catch (err) {
     console.error('Error with connecting to DB: ', err);
