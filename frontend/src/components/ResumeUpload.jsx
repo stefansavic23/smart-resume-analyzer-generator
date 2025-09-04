@@ -117,10 +117,10 @@ const ResumeUpload = (props) => {
                         <Button
                             component="label"
                             role={undefined}
-                            id="uploadResumeBtn"
                             variant="contained"
                             tabIndex={-1}
                             startIcon={<CloudUploadIcon />}
+                            sx={{marginTop: '10px'}}
                         >
                             Upload resume
                             <VisuallyHiddenInput
@@ -132,10 +132,10 @@ const ResumeUpload = (props) => {
                     <Grid size={12} display={"flex"} justifyContent={"center"}>
                         {isLoading ?
                             <Stack direction="row" spacing={2}>
-                                <Button id="analyzeBtn" variant="text" type="submit">Analyze</Button>
+                                <Button variant="text" type="submit" sx={{ marginTop: '10px' }}>Analyze</Button>
                             </Stack>
                             : <Stack direction="row">
-                                <Button loading variant="outlined" id="loadingBtn">
+                                <Button loading variant="outlined" sx={{ marginTop: '10px' }}>
                                     Submit
                                 </Button>
                             </Stack>
