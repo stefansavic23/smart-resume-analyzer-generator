@@ -29,7 +29,7 @@ const RegisterLogin = (props) => {
         e.preventDefault()
 
         try {
-            const response = await axios.post(`http://localhost:3000${props.action}`, {
+            const response = await axios.post(`http://localhost:3000/api/v1${props.action}`, {
                 email: email,
                 password: password
             })

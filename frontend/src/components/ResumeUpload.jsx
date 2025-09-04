@@ -68,7 +68,7 @@ const ResumeUpload = (props) => {
             setErrorMessage(null)
             setIsLoading(false)
 
-            const response = await axios.post('http://localhost:3000/analyze-resume', formData, {
+            const response = await axios.post('http://localhost:3000/api/v1/analyze-resume', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${accessToken}`
