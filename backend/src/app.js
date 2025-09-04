@@ -5,6 +5,7 @@ import sequelize from "./model/database.js"
 import bodyParser from "body-parser"
 import { URL, PORT } from "./constants/app.js"
 import { API_PREFIX } from "./constants/api.js"
+import errorHandler from "./controller/errorMiddleware.js"
 import "./model/resume.js"
 import "./model/User.js"
 import "./associations/associations.js"
@@ -17,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(`${API_PREFIX}/`, userRoutes)
 app.use(`${API_PREFIX}/analyze-resume`, resumeRoutes)
+app.use(errorHandler)
 
 app.get("/welcome", (req, res) => {
     res.json("Welcome")
@@ -27,8 +29,8 @@ try {
     console.log('DB connected');
     await sequelize.sync({ force: false });
     app.listen(PORT, () => {
-        console.log(`Server running on port ${URL.concat(PORT)}`)
+        console.log(`Server running on port ${URL}${PORT}`)
     })
-} catch (err) {
-    console.error('Error with connecting to DB: ', err);
+} catch (error) {
+    errorHandler(error)
 }

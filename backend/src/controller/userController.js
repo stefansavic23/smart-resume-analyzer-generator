@@ -4,6 +4,7 @@ import User from "../model/User.js"
 import checkEmail from '../utils/checkEmail.js'
 import checkPassword from '../utils/checkPassword.js'
 import { ACCESS_TOKEN_SECRET } from "../constants/tokens.js"
+import errorHandler from "./errorMiddleware.js"
 
 const login = async (req, res) => {
     try {
@@ -28,8 +29,8 @@ const login = async (req, res) => {
             const accessToken = jwt.sign(userData, ACCESS_TOKEN_SECRET)
             res.status(201).json({ accessToken: accessToken })
         })
-    } catch (err) {
-        res.status(401).json({ message: "Login failed ", err })
+    } catch (error) {
+        errorHandler(error)
     }
 }
 
@@ -51,8 +52,8 @@ const register = async (req, res) => {
 
         await user.save()
         res.status(201).json({ accessToken: accessToken })
-    } catch (err) {
-        res.status(500).json({ message: "Registration failed ", err })
+    } catch (error) {
+        errorHandler(error)
     }
 }
 

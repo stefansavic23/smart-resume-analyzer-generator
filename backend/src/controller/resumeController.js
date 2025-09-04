@@ -4,6 +4,8 @@ import { GoogleGenAI } from "@google/genai";
 import Resume from "../model/resume.js"
 import Analysis from '../model/Analysis.js';
 import { API_KEY, API_MODEL, API_CONTENTS } from "../constants/api.js"
+import errorHandler from "../controller/errorMiddleware.js"
+import { error } from "console";
 
 const ai = new GoogleGenAI({ apiKey: API_KEY });
 
@@ -17,13 +19,13 @@ async function main(contents) {
 }
 
 const analyzeResume = async (req, res) => {
-    const { jobDescription } = req.body
-
-    if (!req.file) return res.status(404).json({ message: "Please input your resume" })
-    if (!jobDescription) return res.status(404).json({ message: "Please enter your job description" })
-
     try {
-        const dataBuffer = fs.readFileSync(req.file.path)
+        const { jobDescription } = req.body
+
+        if (!req.file) return res.status(404).json({ message: "Please input your resume" })
+        if (!jobDescription) return res.status(404).json({ message: "Please enter your job description" })
+
+        let dataBuffer = fs.readFileSync(req.file.path)
         const data = await pdf(dataBuffer)
 
         const analyzedResume = await main(API_CONTENTS.concat(" ", data.text, jobDescription))
@@ -49,9 +51,8 @@ const analyzeResume = async (req, res) => {
         })
 
         return res.status(200).json({ message: analyzedResume })
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "An error occurred while analyzing the resume." });
+    } catch (error) {
+        errorHandler(error)
     }
 }
 
