@@ -9,12 +9,12 @@ export default function ResumeLoader({ isLoading, finished }) {
   React.useEffect(() => {
     if (!isLoading) return;
 
-    setProgress(0); 
+    setProgress(0);
 
     const timer = setInterval(() => {
       setProgress((oldProgress) => {
         if (oldProgress >= 90) {
-          return oldProgress; 
+          return oldProgress;
         }
         return Math.min(oldProgress + 5, 90);
       });
@@ -29,7 +29,7 @@ export default function ResumeLoader({ isLoading, finished }) {
     }
   }, [finished]);
 
-  if (!isLoading) return null; 
+  if (!isLoading) return null;
 
   return (
     <Box sx={{ width: "300px", mt: 2 }}>
