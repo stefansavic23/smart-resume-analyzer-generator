@@ -4,8 +4,7 @@ import { GoogleGenAI } from "@google/genai";
 import Resume from "../model/resume.js"
 import Analysis from '../model/Analysis.js';
 import { API_KEY, API_MODEL, API_CONTENTS } from "../constants/api.js"
-import errorHandler from "../controller/errorMiddleware.js"
-import { error } from "console";
+import errorHandler from "../controller/errorHandler.js"
 
 const ai = new GoogleGenAI({ apiKey: API_KEY });
 

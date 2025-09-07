@@ -4,7 +4,7 @@ import User from "../model/User.js"
 import checkEmail from '../utils/checkEmail.js'
 import checkPassword from '../utils/checkPassword.js'
 import { ACCESS_TOKEN_SECRET } from "../constants/tokens.js"
-import errorHandler from "./errorMiddleware.js"
+import errorHandler from "./errorHandler.js"
 
 const login = async (req, res) => {
     try {
