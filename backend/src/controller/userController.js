@@ -10,8 +10,13 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body
 
-        checkEmail(email)
-        checkPassword(password)
+        if (checkEmail(email) === false) {
+            return res.status(400).json({ message: "Invalid email" })
+        }
+
+        if (checkPassword(password) === false) {
+            return res.status(400).json({ message: "Invalid password" })
+        }
 
         const userData = { email, password }
 
@@ -39,13 +44,13 @@ const register = async (req, res) => {
         const { email, password } = req.body
 
         if (checkEmail(email) === false) {
-            return res.status(400).json({message: "Invalid email"})
+            return res.status(400).json({ message: "Invalid email" })
         }
-        
+
         if (checkPassword(password) === false) {
-            return res.status(400).json({message: "Invalid password"})
+            return res.status(400).json({ message: "Invalid password" })
         }
-        
+
         const hashedPassword = bcrypt.hash(password, 10)
         const userData = { email, hashedPassword }
 
