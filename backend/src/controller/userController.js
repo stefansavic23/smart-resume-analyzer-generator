@@ -38,7 +38,9 @@ const register = async (req, res) => {
     try {
         const { email, password } = req.body
 
-        checkEmail(email)
+        if (checkEmail(email) === false) {
+            return res.status(400).json({message: "Invalid Email"})
+        }
         checkPassword(password)
 
         const hashedPassword = bcrypt.hash(password, 10)
