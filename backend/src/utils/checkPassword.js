@@ -12,12 +12,9 @@ const checkPassword = (password) => {
         .has().not().spaces()
 
 
-    const result = passwordSchema.validate(password, { details: true })
+    const result = passwordSchema.validate(password)
 
-    if (result.length > 0) {
-        const messages = result.map(r => r.message)
-        return res.status(400).json(messages)
-    }
+    return result
 }
 
 export default checkPassword
