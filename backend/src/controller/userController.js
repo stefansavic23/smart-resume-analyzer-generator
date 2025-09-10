@@ -10,26 +10,26 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body
 
-        if (checkEmail(email) === false) {
-            return res.status(400).json({ message: "Invalid email" })
+        if (checkPassword(password) === false) {
+            return res.status(400).json("Invalid Password")
         }
 
-        if (checkPassword(password) === false) {
-            return res.status(400).json({ message: "Invalid password" })
+        if (checkEmail(email) === false) {
+            return res.status(400).json("Invalid email")
         }
 
         const userData = { email, password }
 
         const user = await User.findOne({ where: { email } })
 
-        if (!user) return res.status(404).json({ message: "User doesn't exist" })
+        if (!user) return res.status(404).json("User doesn't exist")
 
         userData["userId"] = user.id
 
         bcrypt.compare(password, user.password, (err, result) => {
             if (err) throw err;
             if (result === false) {
-                return res.status(401).json({ message: "Incorrect password" })
+                return res.status(401).json("Invalid Password")
             }
             const accessToken = jwt.sign(userData, ACCESS_TOKEN_SECRET)
             res.status(201).json({ accessToken: accessToken })
@@ -44,11 +44,11 @@ const register = async (req, res) => {
         const { email, password } = req.body
 
         if (checkEmail(email) === false) {
-            return res.status(400).json({ message: "Invalid email" })
+            return res.status(400).json("Invalid email")
         }
 
         if (checkPassword(password) === false) {
-            return res.status(400).json({ message: "Invalid password" })
+            return res.status(400).json("Invalid password")
         }
 
         const hashedPassword = bcrypt.hash(password, 10)
