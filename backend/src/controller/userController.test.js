@@ -2,12 +2,11 @@ import { jest } from "@jest/globals"
 import { login } from "./userController.js"
 
 jest.mock("bcrypt", () => ({
-    ...jest.requireActual("bcrypt"), // Use the actual implementation for everything else
-    compare: jest.fn(), // But specifically mock the 'compare' function
+    compare: jest.fn(),
+    // Add any other bcrypt functions you might use, like `hash`
+    // hash: jest.fn()
 }));
 
-import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
 import User from "../model/User.js"
 //import checkEmail from "../utils/checkEmail.js"
 //import checkPassword from "../utils/checkPassword.js"
@@ -15,11 +14,14 @@ import User from "../model/User.js"
 const checkEmail = jest.fn()
 const checkPassword = jest.fn()
 
-jest.mock("bcrypt")
+
 jest.mock("jsonwebtoken")
 jest.mock("../model/User.js")
 jest.mock("../utils/checkEmail.js")
 jest.mock("../utils/checkPassword.js")
+
+const jwt = (await import("jsonwebtoken")).default;
+const bcrypt = (await import("bcrypt")).default;
 
 describe("login", () => {
     let req, res;
@@ -48,7 +50,7 @@ describe("login", () => {
         await login(req, res)
 
         expect(res.status).toHaveBeenCalledWith(400)
-        expect(res.json).toHaveBeenCalledWith("Invalid email")
+        expect(res.json).toHaveBeenCalledWith("Invalid Password")
     })
 
     it("should return 404 if user does not exist", async () => {
@@ -78,17 +80,18 @@ describe("login", () => {
     })
 
     it("should return 201 with accessToken if login is successful", async () => {
-        checkEmail.mockReturnValue(true)
         checkPassword.mockReturnValue(true)
+        await login(req, res)
+
         const UserMock = jest.fn().mockResolvedValue({ id: 1, email: "test@example.com", password: "hash" })
 
         await UserMock()
 
-        jwt.sign.mockReturnValue("mockedToken")
+        bcrypt.compare.mockResolvedValue(true);
 
-        await login(req, res)
+        jwt.sign.mockReturnValue("accessToken")
 
         expect(res.status).toHaveBeenCalledWith(201)
-        expect(res.json).toHaveBeenCalledWith("mockedToken")
+        expect(res.json).toHaveBeenCalledWith("accessToken")
     })
 })

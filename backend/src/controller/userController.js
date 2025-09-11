@@ -8,36 +8,41 @@ import errorHandler from "./errorHandler.js"
 
 const login = async (req, res) => {
     try {
-        const { email, password } = req.body
+        const { email, password } = req.body;
 
         if (checkPassword(password) === false) {
-            return res.status(400).json("Invalid Password")
+            return res.status(400).json("Invalid Password");
         }
 
         if (checkEmail(email) === false) {
-            return res.status(400).json("Invalid email")
+            return res.status(400).json("Invalid email");
         }
 
-        const userData = { email, password }
+        const user = await User.findOne({ where: { email } });
 
-        const user = await User.findOne({ where: { email } })
+        if (!user) {
+            return res.status(404).json("User doesn't exist");
+        }
 
-        if (!user) return res.status(404).json("User doesn't exist")
+        const isMatch = await bcrypt.compare(password, user.password);
 
-        userData["userId"] = user.id
+        if (!isMatch) {
+            return res.status(400).json("Invalid Password");
+        }
 
-        bcrypt.compare(password, user.password, (err, result) => {
-            if (err) throw err;
-            if (result === false) {
-                return res.status(401).json("Invalid Password")
-            }
-            const accessToken = jwt.sign(userData, ACCESS_TOKEN_SECRET)
-            res.status(201).json({ accessToken: accessToken })
-        })
+        const userData = {
+            email,
+            password,
+            userId: user.id
+        };
+        const accessToken = jwt.sign(userData, ACCESS_TOKEN_SECRET);
+
+        return res.status(201).json({ accessToken: accessToken });
+
     } catch (error) {
-        errorHandler(error)
+        errorHandler(error);
     }
-}
+};
 
 const register = async (req, res) => {
     try {
