@@ -16,7 +16,9 @@ const checkPassword = jest.fn()
 
 
 jest.mock("jsonwebtoken")
-jest.mock("../model/User.js")
+jest.mock("../model/User.js", {
+    findOne: jest.fn()
+})
 jest.mock("../utils/checkEmail.js")
 jest.mock("../utils/checkPassword.js")
 

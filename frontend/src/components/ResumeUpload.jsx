@@ -7,6 +7,7 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import axios from "axios";
 import { useState } from "react";
@@ -100,79 +101,147 @@ const ResumeUpload = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Box justifyItems={"center"}>
-        <Typography variant="h4" gutterBottom>
-          Upload your resume
-        </Typography>
-        <form spacing={4} onSubmit={handleUpload}>
-          {errorMessage && (
-            <Stack sx={{ width: "100%" }} spacing={2}>
-              <Alert severity="error">{errorMessage}</Alert>
-            </Stack>
-          )}
+      <Container
+        maxWidth="md"
+        sx={{
+          minHeight: '100vh',
+          py: { xs: 4, sm: 6, md: 8 }
+        }}
+      >
+        <Box sx={{ width: '100%' }}>
+          <Typography
+            variant="h4"
+            component="h1"
+            gutterBottom
+            sx={{
+              textAlign: 'center',
+              mb: 4,
+              fontSize: { xs: '1.75rem', sm: '2.125rem', md: '2.5rem' }
+            }}
+          >
+            Upload your resume
+          </Typography>
+          <form onSubmit={handleUpload}>
+            <Grid container spacing={3}>
+              {errorMessage && (
+                <Grid size={{ xs: 12 }}>
+                  <Stack sx={{ width: "100%" }} spacing={2}>
+                    <Alert severity="error">{errorMessage}</Alert>
+                  </Stack>
+                </Grid>
+              )}
 
-          <Grid size={6} display="flex" justifyContent="center" alignItems="center">
-            <TextField
-              onChange={(event) => setJobDescription(event.target.value)}
-              id="standard-basic"
-              label="Job Description"
-              variant="standard"
-              required={true}
-            />
-          </Grid>
+              <Grid size={{ xs: 12, sm: 12 }}>
+                <TextField
+                  onChange={(event) => setJobDescription(event.target.value)}
+                  id="job-description"
+                  label="Job Description"
+                  variant="outlined"
+                  required={true}
+                  fullWidth
+                  multiline
+                  rows={4}
+                />
+              </Grid>
 
-          <Grid size={6} display="flex" justifyContent="center" alignItems="center">
-            <Button
-              component="label"
-              role={undefined}
-              variant="contained"
-              tabIndex={-1}
-              startIcon={<CloudUploadIcon />}
-              sx={{ marginTop: "10px" }}
-            >
-              Upload resume
-              <VisuallyHiddenInput type="file" onChange={handleResumeChange} />
-            </Button>
-          </Grid>
+              <Grid size={{ xs: 12, sm: 12 }}>
+                <Box sx={{
+                  display: "flex",
+                  flexDirection: { xs: 'column', sm: 'row' },
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 2
+                }}>
+                  <Button
+                    component="label"
+                    role={undefined}
+                    variant="contained"
+                    tabIndex={-1}
+                    startIcon={<CloudUploadIcon />}
+                    size="large"
+                    sx={{
+                      minWidth: { xs: '100%', sm: 'auto' },
+                      py: 1.5
+                    }}
+                  >
+                    Upload resume
+                    <VisuallyHiddenInput type="file" onChange={handleResumeChange} accept=".pdf,.doc,.docx" />
+                  </Button>
+                  {selectedResume && (
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        textAlign: { xs: 'center', sm: 'left' },
+                        wordBreak: 'break-word',
+                        fontSize: { xs: '0.75rem', sm: '0.875rem' }
+                      }}
+                    >
+                      {selectedResume.name}
+                    </Typography>
+                  )}
+                </Box>
+              </Grid>
 
-          <Grid size={12} display={"flex"} justifyContent={"center"}>
-            {!isLoading ? (
-              <Stack direction="row" spacing={2}>
-                <Button variant="text" type="submit" sx={{ marginTop: "10px" }}>
-                  Analyze
-                </Button>
-              </Stack>
-            ) : (
-              <Stack direction="row">
-                <ResumeLoader isLoading={isLoading} finished={finished} />
-              </Stack>
-            )}
-          </Grid>
+              <Grid size={{ xs: 12 }} sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+                {!isLoading ? (
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    size="large"
+                    sx={{
+                      minWidth: { xs: '100%', sm: '200px' },
+                      py: 1.5
+                    }}
+                  >
+                    Analyze
+                  </Button>
+                ) : (
+                  <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                    <ResumeLoader isLoading={isLoading} finished={finished} />
+                  </Box>
+                )}
+              </Grid>
 
-          <Grid size={12} display="flex" justifyContent="center">
-            {aiResume && (
-              <Card
-                sx={{
-                  mt: 2,
-                  maxWidth: "600px",
-                  maxHeight: "400px",
-                  overflowY: "auto",
-                }}
-              >
-                <CardContent>
-                  <SimpleAlert message={"Resume analyzed successfully"} />
-                  <Typography variant="h6" gutterBottom>
-                    AI Resume Analysis
-                  </Typography>
-                  <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
-                    {aiResume}
-                  </Typography>
-                </CardContent>
-              </Card>
-            )}
-          </Grid>
-        </form>
-      </Box>
+              <Grid size={{ xs: 12 }} sx={{ display: "flex", justifyContent: "center" }}>
+                {aiResume && (
+                  <Card
+                    sx={{
+                      mt: 2,
+                      width: '100%',
+                      maxWidth: { xs: '100%', sm: '600px', md: '700px' },
+                      maxHeight: { xs: '300px', sm: '400px', md: '500px' },
+                      overflowY: "auto",
+                    }}
+                  >
+                    <CardContent>
+                      <SimpleAlert message={"Resume analyzed successfully"} />
+                      <Typography
+                        variant="h6"
+                        gutterBottom
+                        sx={{
+                          mt: 2,
+                          fontSize: { xs: '1.1rem', sm: '1.25rem' }
+                        }}
+                      >
+                        AI Resume Analysis
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          whiteSpace: "pre-line",
+                          fontSize: { xs: '0.875rem', sm: '1rem' }
+                        }}
+                      >
+                        {aiResume}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                )}
+              </Grid>
+            </Grid>
+          </form>
+        </Box>
+      </Container>
     </ThemeProvider>
   );
 };

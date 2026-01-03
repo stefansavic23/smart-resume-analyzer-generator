@@ -32,8 +32,18 @@ export default function ResumeLoader({ isLoading, finished }) {
   if (!isLoading) return null;
 
   return (
-    <Box sx={{ width: "300px", mt: 2 }}>
-      <Typography variant="body2" sx={{ mb: 1 }}>
+    <Box sx={{ 
+      width: { xs: "100%", sm: "300px" }, 
+      mt: 2,
+      px: { xs: 2, sm: 0 }
+    }}>
+      <Typography 
+        variant="body2" 
+        sx={{ 
+          mb: 1,
+          fontSize: { xs: '0.75rem', sm: '0.875rem' }
+        }}
+      >
         {progress}%
       </Typography>
       <LinearProgress variant="determinate" value={progress} />
